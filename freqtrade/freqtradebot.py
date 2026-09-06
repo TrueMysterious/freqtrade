@@ -170,6 +170,8 @@ class FreqtradeBot(LoggingMixin):
                         t = str(time(time_slot, minutes, 2))
                         self._schedule.every().day.at(t).do(update)
 
+            # schedule is in local time by default (!)
+            # Explicit timezones must be configured explicitly.
             self._schedule.every().day.at("00:02").do(self.exchange.ws_connection_reset)
             self._schedule.every().day.at("00:07").do(self.wallets.record_wallet_state)
 
