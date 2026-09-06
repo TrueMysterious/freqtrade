@@ -11,8 +11,6 @@ from threading import Lock
 from time import sleep
 from typing import Any
 
-from schedule import Scheduler
-
 from freqtrade import constants
 from freqtrade.configuration import remove_exchange_credentials, validate_config_consistency
 from freqtrade.constants import BuySell, Config, EntryExecuteMode, ExchangeConfig, LongShort
@@ -63,7 +61,7 @@ from freqtrade.rpc.rpc_types import (
 )
 from freqtrade.strategy.interface import IStrategy
 from freqtrade.strategy.strategy_wrapper import strategy_safe_wrapper
-from freqtrade.util import FtPrecise, MeasureTime, PeriodicCache, dt_from_ts, dt_now
+from freqtrade.util import FtPrecise, FtScheduler, MeasureTime, PeriodicCache, dt_from_ts, dt_now
 from freqtrade.util.migrations import migrate_live_content
 from freqtrade.wallets import Wallets
 
@@ -155,7 +153,7 @@ class FreqtradeBot(LoggingMixin):
             self._exit_reason_cache = PeriodicCache(100, ttl=timeframe_secs)
             LoggingMixin.__init__(self, logger, timeframe_secs)
 
-            self._schedule = Scheduler()
+            self._schedule = FtScheduler()
 
             if self.trading_mode == TradingMode.FUTURES:
 
